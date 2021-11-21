@@ -1,11 +1,49 @@
-<section class="signup-form" fxLayoutAlign="center center">
-  <form fxLayout="column">
+<section class="signup-form">
+  <form fxLayout="column"  fxLayoutAlign="center center" fxLayoutGap="10px"  (ngSubmit)="onSubmit(f)" #f="ngForm">
     <mat-form-field>
-      <input type="email" matInput placeholder="Votre email">
+      <input
+        type="email"
+        matInput
+        placeholder="Votre email"
+        ngModel
+        name="email"
+        required
+        #emailInput=ngModel
+      >
+      <mat-error *ngIf="emailInput.hasError('required')">E-mail doit pas rester vide</mat-error>
+      <mat-error *ngIf="!emailInput.hasError('required')">E-mail non valide</mat-error>
     </mat-form-field>
+
+    <mat-form-field hintLabel="Sa doit avoir au moins 6 caractéres">
+      <input
+        type="password"
+        matInput
+        placeholder="Votre mot de passe"
+        ngModel
+        name="password"
+        required
+        minlength="6"
+        #pwInput="ngModel"
+      >
+      <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
+    </mat-form-field>
+
     <mat-form-field>
-      <input type="password" matInput placeholder="Votre mot de passe">
+      <mat-label>Votre date d'anniversaire</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [max]="maxDate"
+        ngModel
+        name="birthday"
+        required
+      >
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <button mat-raised-button color="primary">Envoyer</button>
+
+    <mat-checkbox labelPosition="after" color="primary">Accepter les conditions d'utilisations</mat-checkbox>
+
+    <button mat-raised-button color="primary" [disabled]="f.invalid">Envoyer</button>
   </form>
 </section>

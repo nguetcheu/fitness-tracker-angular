@@ -1,11 +1,26 @@
 <section class="new-training" fxLayout fxLayoutAlign="center center">
-  <mat-card fxFlex="400px">
-    <mat-card-title>Il est temps de faire du sport</mat-card-title>
-    <mat-card-content>
-      
+  <mat-card fxflex.xs="100%" fxFlex="400px" >
+    <mat-card-title fxLayoutAlign="center">Il est temps de faire du sport</mat-card-title>
+    <mat-card-content fxLayoutAlign="center">
+      <mat-form-field>
+        <mat-select placeholder="selectionner l'exercie">
+          <mat-option value="pompes">
+            Pompes
+          </mat-option>
+          <mat-option value="squat">
+            Squat
+          </mat-option>
+          <mat-option value="planche-dorsale">
+            Planche dorsale
+          </mat-option>
+          <mat-option value="jumping-jack">
+            Jumping-jack
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </mat-card-content>
-    <mat-card-actions>
-      <button type="submit" mat-button>Start</button>
+    <mat-card-actions fxLayoutAlign="center">
+      <button type="submit" mat-button (click)="onStartTraining()">Start</button>
     </mat-card-actions>
   </mat-card>
 </section>

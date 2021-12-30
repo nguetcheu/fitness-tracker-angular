@@ -1,4 +1,8 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
+
 import { BrowserModule } from '@angular/platform-browser';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule,ReactiveFormsModule} from "@angular/forms";
@@ -19,6 +23,8 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
 import { StopTrainingComponent } from "./training/current-training/stop-training.component";
 import { AuthService } from "./auth/auth.service";
 import {TrainingService} from "./training/training.service";
+
+
 
 @NgModule({
   declarations: [
@@ -43,7 +49,7 @@ import {TrainingService} from "./training/training.service";
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, TrainingService],
+  providers: [AuthService, TrainingService, {provide: LOCALE_ID, useValue: "fr-CA"}],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent]
 })

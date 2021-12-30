@@ -11,6 +11,7 @@ export class TrainingService {
     ];
     // @ts-ignore
     private runningExercise: Exercise;
+    private exercises: Exercise[] = [];
 
     getAvailableExercises() {
         return this.availableExercises.slice();
@@ -20,5 +21,39 @@ export class TrainingService {
         // @ts-ignore
         this.runningExercise = this.availableExercises.find(ex => ex.id == selectedId);
         this.exerciseChanged.next({ ...this.runningExercise });
+    }
+
+    completeExercise() {
+        this.exercises.push({
+            ...this.runningExercise,
+            date: new Date(),
+            etat: "complet"
+        });
+        // @ts-ignore
+        this.runningExercise = null;
+        // @ts-ignore
+        this.exerciseChanged.next(null);
+    }
+
+    cancelExercise(progress: number) {
+        this.exercises.push({
+            ...this.runningExercise,
+            duree: this.runningExercise.duree * (progress/ 100),
+            calories: this.runningExercise.calories * (progress/ 100),
+            date: new Date(),
+            etat: "annuler"
+        });
+        // @ts-ignore
+        this.runningExercise = null;
+        // @ts-ignore
+        this.exerciseChanged.next(null);
+    }
+
+    getRunningExercise() {
+        return { ...this.runningExercise };
+    }
+
+    getCompleteOrCancelledExercises() {
+        return this.exercises.slice();
     }
 }

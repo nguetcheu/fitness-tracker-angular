@@ -6,6 +6,8 @@ registerLocaleData(localeFr);
 import { BrowserModule } from '@angular/platform-browser';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule,ReactiveFormsModule} from "@angular/forms";
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,7 +25,7 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
 import { StopTrainingComponent } from "./training/current-training/stop-training.component";
 import { AuthService } from "./auth/auth.service";
 import {TrainingService} from "./training/training.service";
-
+import { environment } from "../environments/environment";
 
 
 @NgModule({
@@ -47,7 +49,10 @@ import {TrainingService} from "./training/training.service";
     MaterialModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   providers: [AuthService, TrainingService, {provide: LOCALE_ID, useValue: "fr-CA"}],
   bootstrap: [AppComponent],

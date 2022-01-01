@@ -26,6 +26,7 @@ import { StopTrainingComponent } from "./training/current-training/stop-training
 import { AuthService } from "./auth/auth.service";
 import {TrainingService} from "./training/training.service";
 import { environment } from "../environments/environment";
+import {TimeFormat} from "./training/date.pipe";
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { environment } from "../environments/environment";
     WelcomeComponent,
     HeaderComponent,
     SidenavListComponent,
-    StopTrainingComponent
+    StopTrainingComponent,
+    TimeFormat
   ],
   imports: [
     BrowserModule,
@@ -54,6 +56,7 @@ import { environment } from "../environments/environment";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
+  exports: [TimeFormat],
   providers: [AuthService, TrainingService, {provide: LOCALE_ID, useValue: "fr-CA"}],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent]

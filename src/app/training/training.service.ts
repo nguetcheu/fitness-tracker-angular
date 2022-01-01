@@ -38,6 +38,8 @@ export class TrainingService {
     }
 
     startExercise(selectedId: string) {
+        // selection et mise a jour d'un document //
+        //this.db.doc('availableExercises/' + selectedId).update({lastSelected: new Date()});
         // @ts-ignore
         this.runningExercise = this.availableExercises.find(
             ex => ex.id === selectedId

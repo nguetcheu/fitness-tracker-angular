@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {AngularFirestore} from 'angularfire2/firestore';
 import { Subject } from "rxjs";
 import {map} from "rxjs/operators";
+import {Subscription} from "rxjs";
 
 import {Exercise} from "./exercise.model";
 
@@ -14,13 +15,13 @@ export class TrainingService {
     private availableExercises: Exercise[] = [];
     // @ts-ignore
     private runningExercise: Exercise;
-    private finishedExercises: Exercise[] = [];
+    private firebaseSubscription: Subscription[] = [];
 
     constructor(private db: AngularFirestore) {
     }
 
     fetchAvailableExercises() {
-         this.db
+        this.firebaseSubscription.push(this.db
             .collection('availableExercises')
             .snapshotChanges()
             .pipe(map(docArray => {
@@ -28,13 +29,17 @@ export class TrainingService {
                     return {
                         id: doc.payload.doc.id,
                         // @ts-ignore
-                        ...doc.payload.doc.data()
+                        name: doc.payload.doc.data()['name'],
+                        // @ts-ignore
+                        duree: doc.payload.doc.data()['duree'],
+                        // @ts-ignore
+                        calories: doc.payload.doc.data()['calories']
                     };
                 });
             })).subscribe((exercises: Exercise[]) => {
                 this.availableExercises = exercises;
                 this.exercisesChanged.next([...this.availableExercises]);
-         });
+         }));
     }
 
     startExercise(selectedId: string) {
@@ -78,13 +83,19 @@ export class TrainingService {
     }
 
     fetchCompletedOrCancelledExercises() {
-        this.db
+        this.firebaseSubscription.push(this.db
             .collection('finishedExercises')
             .valueChanges()
             // @ts-ignore
             .subscribe((exercises: Exercise[]) => {
                 this.finishedExercisesChanged.next(exercises);
-            });
+            },(error) => {
+                //console.log(error);
+            }));
+    }
+
+    cancelSubscription() {
+        this.firebaseSubscription.forEach(sub => sub.unsubscribe());
     }
 
     private addDataToDatabase(exercise: Exercise) {

@@ -18,6 +18,7 @@
             <mat-hint>Pardon entrer votre mot de passe.</mat-hint>
             <mat-error>mot de passe manquant.</mat-error>
         </mat-form-field>
-        <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Connexion</button>
+        <button *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Connexion</button>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
     </form>
 </section>

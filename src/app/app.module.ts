@@ -28,6 +28,7 @@ import { AuthService } from "./auth/auth.service";
 import {TrainingService} from "./training/training.service";
 import { environment } from "../environments/environment";
 import {TimeFormat} from "./training/date.pipe";
+import {UiService} from "./shared/ui.service";
 
 
 @NgModule({
@@ -59,7 +60,7 @@ import {TimeFormat} from "./training/date.pipe";
     AngularFireAuthModule
   ],
   exports: [TimeFormat],
-  providers: [AuthService, TrainingService, {provide: LOCALE_ID, useValue: "fr-CA"}],
+  providers: [AuthService, TrainingService, {provide: LOCALE_ID, useValue: "fr-CA"}, UiService],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent]
 })

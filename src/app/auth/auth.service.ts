@@ -6,6 +6,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 
 import { AuthData } from './auth-data.model';
 import {TrainingService} from "../training/training.service";
+import {UiService} from "../shared/ui.service";
 
 
 @Injectable()
@@ -18,7 +19,8 @@ export class AuthService {
     constructor(private router: Router,
                 private afAuth: AngularFireAuth,
                 private trainingService : TrainingService,
-                private snackBar: MatSnackBar
+                private snackBar: MatSnackBar,
+                private uiService: UiService
     ) {}
 
     initAuthListener() {
@@ -38,14 +40,16 @@ export class AuthService {
     }
 
     registerUser(authData: AuthData) {
+        this.uiService.loadingStateChanged.next(true);
         this.afAuth.auth
         .createUserWithEmailAndPassword(
             authData.email,
             authData.password
         ).then(result => {
+            this.uiService.loadingStateChanged.next(false);
         })
         .catch(error => {
-            console.log(error);
+         this.uiService.loadingStateChanged.next(false);
          if(error.code == 'auth/email-already-in-use'){
                 let errorMessage = 'E-mail fourni est déjà utilisé par un utilisateur existant.';
                 // @ts-ignore
@@ -57,12 +61,14 @@ export class AuthService {
     }
 
     login(authData: AuthData) {
+        this.uiService.loadingStateChanged.next(true);
         this.afAuth.auth
             .signInWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
+                this.uiService.loadingStateChanged.next(false);
             })
             .catch(error => {
-                console.log(error);
+                this.uiService.loadingStateChanged.next(false);
                 if(error.code == 'auth/wrong-password') {
                     let errorMessage = 'Le mot de passe est invalide';
                     // @ts-ignore

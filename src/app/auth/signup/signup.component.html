@@ -44,6 +44,7 @@
 
     <mat-checkbox labelPosition="after" color="primary">Accepter les conditions d'utilisations</mat-checkbox>
 
-    <button mat-raised-button color="primary" [disabled]="f.invalid">Envoyer</button>
+    <button *ngIf="!isLoading" mat-raised-button color="primary" [disabled]="f.invalid">Envoyer</button>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
   </form>
 </section>

@@ -5,6 +5,7 @@ import {map} from "rxjs/operators";
 import {Subscription} from "rxjs";
 
 import {Exercise} from "./exercise.model";
+import {UiService} from "../shared/ui.service";
 
 @Injectable()
 export class TrainingService {
@@ -17,7 +18,7 @@ export class TrainingService {
     private runningExercise: Exercise;
     private firebaseSubscription: Subscription[] = [];
 
-    constructor(private db: AngularFirestore) {
+    constructor(private db: AngularFirestore, private uiService: UiService) {
     }
 
     fetchAvailableExercises() {
@@ -37,9 +38,16 @@ export class TrainingService {
                     };
                 });
             })).subscribe((exercises: Exercise[]) => {
+                this.uiService.loadingStateChanged.next(false);
                 this.availableExercises = exercises;
                 this.exercisesChanged.next([...this.availableExercises]);
-         }));
+                // @ts-ignore
+         }, error => {
+                this.uiService.loadingStateChanged.next(false);
+                this.uiService.showSnackbar('Echec de la recuperation de données pardon esayer plus tard', null, 3000);
+                // @ts-ignore
+                this.exercisesChanged.next(null);
+            }));
     }
 
     startExercise(selectedId: string) {

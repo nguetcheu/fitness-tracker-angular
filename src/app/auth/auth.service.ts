@@ -19,7 +19,6 @@ export class AuthService {
     constructor(private router: Router,
                 private afAuth: AngularFireAuth,
                 private trainingService : TrainingService,
-                private snackBar: MatSnackBar,
                 private uiService: UiService
     ) {}
 
@@ -52,11 +51,14 @@ export class AuthService {
          this.uiService.loadingStateChanged.next(false);
          if(error.code == 'auth/email-already-in-use'){
                 let errorMessage = 'E-mail fourni est déjà utilisé par un utilisateur existant.';
-                // @ts-ignore
-                this.snackBar.open(errorMessage, null, ()=> {
+                this.uiService.showSnackbar(errorMessage,null, {
                     duration:3000
-                });
-            }
+                })
+            }else {
+             this.uiService.showSnackbar(error.message, null,  {
+                 duration:3000
+             })
+         }
         });
     }
 
@@ -71,22 +73,19 @@ export class AuthService {
                 this.uiService.loadingStateChanged.next(false);
                 if(error.code == 'auth/wrong-password') {
                     let errorMessage = 'Le mot de passe est invalide';
-                    // @ts-ignore
-                    this.snackBar.open(errorMessage, null, ()=> {
-                        duration:3000
-                    });
+                    this.uiService.showSnackbar(errorMessage, null, {
+                        duration: 3000
+                    })
                 }
                 else if(error.code == 'auth/network-request-failed'){
                     let errorMessage = 'Impossible de se connecter au serveur.Verifier votre connexion';
-                    // @ts-ignore
-                    this.snackBar.open(errorMessage, null, ()=> {
-                        duration:3000
-                    });
+                    this.uiService.showSnackbar(errorMessage, null, {
+                        duration: 3000
+                    })
                 }
                 else {
-                    // @ts-ignore
-                    this.snackBar.open(error.message, null, () => {
-                        duration:3000
+                    this.uiService.showSnackbar(error.message, null, {
+                        duration: 3000
                     })
                 }
             });
